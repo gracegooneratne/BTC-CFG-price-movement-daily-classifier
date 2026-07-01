@@ -1,0 +1,63 @@
+# Bitcoin 42 Features (31 + 11 On-Chain)
+experiment_name: "Bitcoin 42 Features (with On-Chain)"
+asset: "Bitcoin (BTC-USD)"
+
+data:
+  file: "data/raw/btc_financial_data.csv"
+  target_column: "Close-BPI"
+  
+features:
+  # External Factors (8)
+  - "YM-EF"
+  - "NKD-EF"
+  - "NQ-EF"
+  - "GC-EF"
+  - "JPYUSD-EF"
+  - "Z-EF"
+  - "CL-EF"
+  - "DXY-EF"
+  
+  # Bitcoin OHLCV (5)
+  - "Open-BPI"
+  - "High-BPI"
+  - "Low-BPI"
+  - "Close-BPI"
+  - "Volume-BPI"
+  
+  # Technical Indicators (16)
+  - "AD-TI"
+  - "BBands_Upper-TI"
+  - "BBands_Middle-TI"
+  - "BBands_Lower-TI"
+  - "EMA_12-TI"
+  - "EMA_26-TI"
+  - "MACD-TI"
+  - "MACD_Signal-TI"
+  - "MACD_Hist-TI"
+  - "NATR-TI"
+  - "OBV-TI"
+  - "RSI-TI"
+  - "SMA_20-TI"
+  - "SMA_50-TI"
+  - "Stoch_K-TI"
+  - "Stoch_D-TI"
+  
+  # On-Chain Blockchain Metrics (11)
+  - "n-transactions-excluding-popular-BC"
+  - "difficulty-BC"
+  - "trade-volume-BC"
+  - "miners-revenue-BC"
+  - "market-cap-BC"
+  - "avg-block-size-BC"
+  - "n-transactions-per-block-BC"
+  - "median-confirmation-time-BC"
+  - "hash-rate-BC"
+  - "cost-per-transaction-percent-BC"
+  - "n-transactions-BC"
+  
+  # Lagged (1)
+  - "PriceChange_lag1"
+
+output:
+  results_file: "results/bitcoin_42_features.json"
+  model_prefix: "btc_42"

@@ -1,0 +1,50 @@
+# Bitcoin 31 Features (Baseline)
+experiment_name: "Bitcoin 31 Features"
+asset: "Bitcoin (BTC-USD)"
+
+data:
+  file: "data/raw/btc_financial_data.csv"
+  target_column: "Close-BPI"
+  
+features:
+  # External Factors (8)
+  - "YM-EF"
+  - "NKD-EF"
+  - "NQ-EF"
+  - "GC-EF"
+  - "JPYUSD-EF"
+  - "Z-EF"
+  - "CL-EF"
+  - "DXY-EF"
+  
+  # Bitcoin OHLCV (5)
+  - "Open-BPI"
+  - "High-BPI"
+  - "Low-BPI"
+  - "Close-BPI"
+  - "Volume-BPI"
+  
+  # Technical Indicators (16)
+  - "AD-TI"
+  - "BBands_Upper-TI"
+  - "BBands_Middle-TI"
+  - "BBands_Lower-TI"
+  - "EMA_12-TI"
+  - "EMA_26-TI"
+  - "MACD-TI"
+  - "MACD_Signal-TI"
+  - "MACD_Hist-TI"
+  - "NATR-TI"
+  - "OBV-TI"
+  - "RSI-TI"
+  - "SMA_20-TI"
+  - "SMA_50-TI"
+  - "Stoch_K-TI"
+  - "Stoch_D-TI"
+  
+  # Lagged (1)
+  - "PriceChange_lag1"
+
+output:
+  results_file: "results/bitcoin_31_features.json"
+  model_prefix: "btc_31"

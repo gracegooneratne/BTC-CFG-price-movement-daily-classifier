@@ -1,0 +1,162 @@
+{
+  "experiment": "Bitcoin VIF Filtered - 42 to 17 Features",
+  "description": "VIF analysis on full 42 features (31 baseline + 11 blockchain), removing high multicollinearity (VIF > 10)",
+  "date_completed": "2026-06-16",
+  "vif_analysis": {
+    "initial_features": 42,
+    "final_features": 17,
+    "features_removed": 25,
+    "vif_threshold": 10.0,
+    "methodology": "Iterative removal of highest VIF feature until all VIF < 10",
+    "removed_features": [
+      {"feature": "MACD_Hist-TI", "vif": "Infinity"},
+      {"feature": "BBands_Upper-TI", "vif": "Infinity"},
+      {"feature": "EMA_12-TI", "vif": "Infinity"},
+      {"feature": "SMA_20-TI", "vif": "Infinity"},
+      {"feature": "Open-BPI", "vif": 284073.8},
+      {"feature": "EMA_26-TI", "vif": 24775.3},
+      {"feature": "BBands_Middle-TI", "vif": 9083.0},
+      {"feature": "market-cap-BC", "vif": 8995.3},
+      {"feature": "Close-BPI", "vif": 4445.8},
+      {"feature": "Close_lag1", "vif": 3511.4},
+      {"feature": "High-BPI", "vif": 1691.0},
+      {"feature": "n-transactions-excluding-popular-BC", "vif": 1215.3},
+      {"feature": "SMA_50-TI", "vif": 765.6},
+      {"feature": "Low-BPI", "vif": 284.5},
+      {"feature": "difficulty-BC", "vif": 228.5},
+      {"feature": "NQ-EF", "vif": 75.1},
+      {"feature": "JPYUSD-EF", "vif": 68.9},
+      {"feature": "hash-rate-BC", "vif": 41.9},
+      {"feature": "YM-EF", "vif": 36.5},
+      {"feature": "MACD-TI", "vif": 30.7},
+      {"feature": "AD-TI", "vif": 26.1},
+      {"feature": "n-transactions-per-block-BC", "vif": 22.1},
+      {"feature": "BBands_Lower-TI", "vif": 15.0},
+      {"feature": "NKD-EF", "vif": 14.7},
+      {"feature": "Stoch_D-TI", "vif": 13.9}
+    ],
+    "remaining_features": [
+      "GC-EF",
+      "Z-EF",
+      "CL-EF",
+      "DXY-EF",
+      "Volume-BPI",
+      "MACD_Signal-TI",
+      "NATR-TI",
+      "OBV-TI",
+      "RSI-TI",
+      "Stoch_K-TI",
+      "trade-volume-BC",
+      "miners-revenue-BC",
+      "avg-block-size-BC",
+      "median-confirmation-time-BC",
+      "cost-per-transaction-percent-BC",
+      "n-transactions-BC",
+      "PriceChange_lag1"
+    ]
+  },
+  "feature_configuration": {
+    "total_features": 17,
+    "feature_breakdown": {
+      "external_factors": 4,
+      "bitcoin_ohlcv": 1,
+      "technical_indicators": 5,
+      "blockchain_metrics": 6,
+      "lagged_features": 1
+    },
+    "blockchain_features_kept": [
+      "trade-volume-BC",
+      "miners-revenue-BC",
+      "avg-block-size-BC",
+      "median-confirmation-time-BC",
+      "cost-per-transaction-percent-BC",
+      "n-transactions-BC"
+    ],
+    "blockchain_features_removed": [
+      "market-cap-BC",
+      "n-transactions-excluding-popular-BC",
+      "difficulty-BC",
+      "hash-rate-BC",
+      "n-transactions-per-block-BC"
+    ]
+  },
+  "data_split": {
+    "total_samples": 2508,
+    "train_tune_samples": 2006,
+    "holdout_samples": 502,
+    "split_ratio": 0.8
+  },
+  "optuna_hyperparameter_tuning": {
+    "description": "Bayesian optimization on 80% tune set with VIF-reduced features",
+    "n_trials": 100,
+    "best_trial_number": 25,
+    "rollover_config": {
+      "train_window": 200,
+      "test_window": 1,
+      "step_size": 50,
+      "note": "Larger step size for faster tuning"
+    },
+    "tune_accuracy": 0.703,
+    "best_hyperparameters": {
+      "architecture": {
+        "n_layers": 3,
+        "hidden_layers": [512, 256, 512],
+        "activation": "elu"
+      },
+      "regularization": {
+        "dropout": 0.2,
+        "alpha": 0.684,
+        "beta": 1.310e-05
+      },
+      "optimization": {
+        "learning_rate": 9.349e-05,
+        "batch_size": 64,
+        "epochs": 70,
+        "patience": 25,
+        "val_split": 0.1
+      }
+    }
+  },
+  "holdout_validation_5_fold": {
+    "description": "5 independent runs on 20% holdout set with step_size=1",
+    "rollover_config": {
+      "train_window": 200,
+      "test_window": 1,
+      "step_size": 1,
+      "n_windows_per_run": 302
+    },
+    "individual_runs": {
+      "run_1": 0.523,
+      "run_2": 0.477,
+      "run_3": 0.480,
+      "run_4": 0.490,
+      "run_5": 0.513
+    },
+    "statistics": {
+      "mean_accuracy": 0.497,
+      "std_accuracy": 0.021,
+      "min_accuracy": 0.477,
+      "max_accuracy": 0.523,
+      "confidence_interval_95": {
+        "lower": 0.456,
+        "upper": 0.537
+      }
+    }
+  },
+  "performance_analysis": {
+    "overfitting_gap": 0.206,
+    "overfitting_percentage": 29.3,
+    "performance_vs_random": -0.007,
+    "performance_vs_random_percentage": -1.4,
+    "performance_vs_baseline_42": 0.004,
+    "performance_vs_vif_12": -0.008,
+    "conclusion": "VIF filtering reduced 42 features to 17 (kept 6 blockchain metrics) but did NOT improve performance. Still random (49.7% vs 50.4% baseline)."
+  },
+  "interpretation": {
+    "predictive_power": "None - performance indistinguishable from random guessing",
+    "generalization": "Poor - large overfitting gap persists despite feature reduction",
+    "vif_effectiveness": "VIF filtering + blockchain features did not create predictive signal",
+    "blockchain_value": "Even with reduced multicollinearity, blockchain metrics add no predictive power",
+    "recommendation": "Neither feature engineering nor blockchain data can overcome fundamental lack of predictive signal in daily price direction"
+  }
+}

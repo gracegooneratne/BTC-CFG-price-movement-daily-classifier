@@ -1,0 +1,39 @@
+# Bitcoin VIF-Filtered: 42 → 17 Features
+experiment_name: "Bitcoin VIF 42→17"
+asset: "Bitcoin (BTC-USD)"
+
+data:
+  file: "data/raw/btc_financial_data.csv"
+  target_column: "Close-BPI"
+  
+features:
+  # External Factors (4) - VIF filtered
+  - "GC-EF"
+  - "Z-EF"
+  - "CL-EF"
+  - "DXY-EF"
+  
+  # Bitcoin OHLCV (2) - VIF filtered
+  - "High-BPI"
+  - "Volume-BPI"
+  
+  # Technical Indicators (6) - VIF filtered
+  - "MACD_Signal-TI"
+  - "MACD_Hist-TI"
+  - "NATR-TI"
+  - "OBV-TI"
+  - "RSI-TI"
+  - "Stoch_K-TI"
+  
+  # On-Chain Blockchain (4) - VIF filtered
+  - "difficulty-BC"
+  - "miners-revenue-BC"
+  - "hash-rate-BC"
+  - "cost-per-transaction-percent-BC"
+  
+  # Lagged (1)
+  - "PriceChange_lag1"
+
+output:
+  results_file: "results/bitcoin_vif_42_to_17.json"
+  model_prefix: "btc_vif_17"

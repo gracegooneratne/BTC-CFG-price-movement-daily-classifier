@@ -1,0 +1,137 @@
+{
+  "experiment": "Centrifuge VIF Filtered - 31 to 13 Features",
+  "asset": "Centrifuge (CFG-USD)",
+  "description": "VIF analysis on baseline 31 features, removing high multicollinearity (VIF > 10)",
+  "date_completed": "2026-06-18",
+  "vif_analysis": {
+    "initial_features": 31,
+    "final_features": 13,
+    "features_removed": 18,
+    "vif_threshold": 10.0,
+    "methodology": "Iterative removal of highest VIF feature until all VIF < 10",
+    "removed_features": [
+      {"feature": "BBands_Lower-TI", "vif": "Infinity"},
+      {"feature": "BBands_Middle-TI", "vif": "Infinity"},
+      {"feature": "EMA_26-TI", "vif": "Infinity"},
+      {"feature": "MACD-TI", "vif": "Infinity"},
+      {"feature": "EMA_12-TI", "vif": 4761.2},
+      {"feature": "Close_lag1", "vif": 2758.1},
+      {"feature": "SMA_20-TI", "vif": 1637.8},
+      {"feature": "Close-CD", "vif": 607.4},
+      {"feature": "Open-CD", "vif": 550.8},
+      {"feature": "SMA_50-TI", "vif": 219.5},
+      {"feature": "Low-CD", "vif": 133.2},
+      {"feature": "AD-TI", "vif": 94.6},
+      {"feature": "BBands_Upper-TI", "vif": 64.8},
+      {"feature": "NQ-EF", "vif": 39.8},
+      {"feature": "NKD-EF", "vif": 27.7},
+      {"feature": "YM-EF", "vif": 17.6},
+      {"feature": "JPYUSD-EF", "vif": 16.4},
+      {"feature": "Stoch_D-TI", "vif": 13.2}
+    ],
+    "remaining_features": [
+      "GC-EF",
+      "Z-EF",
+      "CL-EF",
+      "DXY-EF",
+      "High-CD",
+      "Volume-CD",
+      "MACD_Signal-TI",
+      "MACD_Hist-TI",
+      "NATR-TI",
+      "OBV-TI",
+      "RSI-TI",
+      "Stoch_K-TI",
+      "PriceChange_lag1"
+    ]
+  },
+  "feature_configuration": {
+    "total_features": 13,
+    "feature_breakdown": {
+      "external_factors": 4,
+      "cfg_ohlcv": 2,
+      "technical_indicators": 6,
+      "lagged_features": 1
+    },
+    "note": "Kept MACD_Hist (unlike Bitcoin VIF which removed it) - different multicollinearity patterns in CFG data"
+  },
+  "data_split": {
+    "total_samples": 1704,
+    "train_tune_samples": 1363,
+    "holdout_samples": 341,
+    "split_ratio": 0.8
+  },
+  "optuna_hyperparameter_tuning": {
+    "description": "Bayesian optimization on 80% tune set with VIF-reduced features",
+    "n_trials": 100,
+    "best_trial_number": 26,
+    "rollover_config": {
+      "train_window": 200,
+      "test_window": 1,
+      "step_size": 50,
+      "note": "Larger step size for faster tuning"
+    },
+    "tune_accuracy": 0.652,
+    "best_hyperparameters": {
+      "architecture": {
+        "n_layers": 3,
+        "hidden_layers": [256, 64, 64],
+        "activation": "relu"
+      },
+      "regularization": {
+        "dropout": 0.3,
+        "alpha": 0.835,
+        "beta": 4.284e-06
+      },
+      "optimization": {
+        "learning_rate": 1.013e-04,
+        "batch_size": 128,
+        "epochs": 70,
+        "patience": 20,
+        "val_split": 0.25
+      }
+    }
+  },
+  "holdout_validation_5_fold": {
+    "description": "5 independent runs on 20% holdout set with step_size=1",
+    "rollover_config": {
+      "train_window": 200,
+      "test_window": 1,
+      "step_size": 1,
+      "n_windows_per_run": 131
+    },
+    "individual_runs": {
+      "run_1": 0.573,
+      "run_2": 0.618,
+      "run_3": 0.527,
+      "run_4": 0.573,
+      "run_5": 0.519
+    },
+    "statistics": {
+      "mean_accuracy": 0.562,
+      "std_accuracy": 0.040,
+      "min_accuracy": 0.519,
+      "max_accuracy": 0.618,
+      "confidence_interval_95": {
+        "lower": 0.483,
+        "upper": 0.641
+      }
+    }
+  },
+  "performance_analysis": {
+    "overfitting_gap": 0.090,
+    "overfitting_percentage": 13.8,
+    "performance_vs_random": 0.062,
+    "performance_vs_random_percentage": 12.4,
+    "performance_vs_baseline_31": 0.078,
+    "conclusion": "VIF filtering reduced overfitting (9.0% vs 16.8%) and IMPROVED holdout performance (56.2% vs 48.4%). This is DIFFERENT from Bitcoin where VIF didn't help."
+  },
+  "interpretation": {
+    "predictive_power": "Marginal - 56.2% is slightly above random (50%) but within confidence interval",
+    "generalization": "Better than baseline - reduced overfitting and improved holdout accuracy",
+    "vif_effectiveness": "VIF filtering helped CFG (unlike Bitcoin) - suggests different feature dynamics",
+    "statistical_significance": "95% CI [48.3%, 64.1%] overlaps with 50%, so improvement may not be statistically significant",
+    "comparison_to_bitcoin": "CFG VIF results (56.2%) better than Bitcoin VIF (50.5%) - but both still close to random",
+    "recommendation": "VIF filtering shows promise for CFG but results still inconclusive. Larger dataset or different approach needed for reliable predictions."
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "experiment": "Bitcoin 42 Features - Baseline + Blockchain Metrics",
+  "description": "Extended feature set: 31 Baseline + 11 Blockchain metrics",
+  "date_completed": "2026-06-16",
+  "feature_configuration": {
+    "total_features": 42,
+    "feature_breakdown": {
+      "external_factors": 8,
+      "bitcoin_ohlcv": 5,
+      "technical_indicators": 17,
+      "blockchain_metrics": 11,
+      "lagged_features": 1
+    },
+    "baseline_features": 31,
+    "blockchain_features_added": [
+      "hash-rate-BC",
+      "difficulty-BC",
+      "miners-revenue-BC",
+      "transaction-fees-BC",
+      "n-transactions-BC",
+      "n-unique-addresses-BC",
+      "market-cap-BC",
+      "trade-volume-BC",
+      "avg-block-size-BC",
+      "median-confirmation-time-BC",
+      "cost-per-transaction-percent-BC"
+    ]
+  },
+  "data_split": {
+    "total_samples": 2508,
+    "train_tune_samples": 2006,
+    "holdout_samples": 502,
+    "split_ratio": 0.8
+  },
+  "optuna_hyperparameter_tuning": {
+    "description": "Bayesian optimization on 80% tune set",
+    "n_trials": 80,
+    "best_trial_number": 50,
+    "rollover_config": {
+      "train_window": 200,
+      "test_window": 1,
+      "step_size": 50,
+      "note": "Larger step size for faster tuning"
+    },
+    "tune_accuracy": 0.730,
+    "best_hyperparameters": {
+      "architecture": {
+        "n_layers": 2,
+        "hidden_layers": [512, 128],
+        "activation": "elu"
+      },
+      "regularization": {
+        "dropout": 0.150,
+        "alpha": 0.796,
+        "beta": 1.904e-06
+      },
+      "optimization": {
+        "learning_rate": 4.902e-05,
+        "batch_size": 128,
+        "epochs": 85,
+        "patience": 25,
+        "val_split": 0.1
+      }
+    }
+  },
+  "holdout_validation_5_fold": {
+    "description": "5 independent runs on 20% holdout set with step_size=1",
+    "rollover_config": {
+      "train_window": 200,
+      "test_window": 1,
+      "step_size": 1,
+      "n_windows_per_run": 302
+    },
+    "individual_runs": {
+      "run_2": 0.507,
+      "run_3": 0.440,
+      "run_4": 0.503,
+      "run_5": 0.546,
+      "run_6": 0.470
+    },
+    "statistics": {
+      "mean_accuracy": 0.493,
+      "std_accuracy": 0.040,
+      "min_accuracy": 0.440,
+      "max_accuracy": 0.546,
+      "median_accuracy": 0.503,
+      "confidence_interval_95": {
+        "lower": 0.415,
+        "upper": 0.572
+      }
+    }
+  },
+  "performance_analysis": {
+    "overfitting_gap": 0.237,
+    "overfitting_percentage": 32.5,
+    "performance_vs_random": -0.011,
+    "performance_vs_random_percentage": -2.2,
+    "performance_vs_baseline_31": 0.010,
+    "conclusion": "Adding blockchain features INCREASED overfitting (73.0% tune vs 49.3% holdout). No improvement over 31-feature baseline."
+  },
+  "interpretation": {
+    "predictive_power": "None - performance indistinguishable from random guessing",
+    "generalization": "Worse than 31 features - even larger overfitting gap",
+    "blockchain_value": "Blockchain metrics do not add predictive signal for daily price direction",
+    "recommendation": "More features = more overfitting without improving generalization"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "experiment": "Bitcoin Majority Class Baseline",
+  "description": "Majority class determined from 80% train, evaluated on 20% test",
+  "data_split": {
+    "train_size": 2006,
+    "test_size": 502,
+    "split_ratio": 0.8
+  },
+  "class_distribution": {
+    "train": {
+      "up": 1021,
+      "down": 985,
+      "up_percentage": 50.897308075772685
+    },
+    "test": {
+      "up": 247,
+      "down": 255,
+      "up_percentage": 49.20318725099602
+    }
+  },
+  "majority_class": {
+    "class": 1,
+    "label": "Up"
+  },
+  "results": {
+    "accuracy": 0.49203187250996017,
+    "precision": 0.49203187250996017,
+    "recall": 1.0,
+    "f1_score": 0.6595460614152203
+  }
+}

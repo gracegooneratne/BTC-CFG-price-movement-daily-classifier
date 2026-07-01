@@ -1,0 +1,44 @@
+{
+  "experiment": "CFG VIF 31\u219213 Features",
+  "confusion_matrix": {
+    "true_negatives": 332,
+    "false_positives": 63,
+    "false_negatives": 219,
+    "true_positives": 41,
+    "matrix": [
+      [
+        332,
+        63
+      ],
+      [
+        219,
+        41
+      ]
+    ]
+  },
+  "metrics_from_cm": {
+    "accuracy": 0.5694656488549619,
+    "precision": 0.3942307692307692,
+    "recall": 0.1576923076923077,
+    "specificity": 0.8405063291139241,
+    "f1_score": 0.22527472527472528
+  },
+  "class_distribution": {
+    "actual_down": 395,
+    "actual_up": 260,
+    "predicted_down": 551,
+    "predicted_up": 104
+  },
+  "validation_stats": {
+    "mean_accuracy": 0.5694656488549618,
+    "std_accuracy": 0.04815819937583973,
+    "individual_accuracies": [
+      0.5190839694656488,
+      0.5190839694656488,
+      0.6259541984732825,
+      0.5877862595419847,
+      0.5954198473282443
+    ],
+    "total_predictions": 655
+  }
+}

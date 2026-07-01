@@ -1,0 +1,33 @@
+# Centrifuge VIF-Filtered: 31 → 13 Features
+experiment_name: "Centrifuge VIF 31→13"
+asset: "Centrifuge (CFG-USD)"
+
+data:
+  file: "data/raw/cfg_financial_data.csv"
+  target_column: "Close-CD"
+  
+features:
+  # External Factors (4) - VIF filtered
+  - "GC-EF"
+  - "Z-EF"
+  - "CL-EF"
+  - "DXY-EF"
+  
+  # Centrifuge OHLCV (2) - VIF filtered
+  - "High-CD"
+  - "Volume-CD"
+  
+  # Technical Indicators (6) - VIF filtered
+  - "MACD_Signal-TI"
+  - "MACD_Hist-TI"
+  - "NATR-TI"
+  - "OBV-TI"
+  - "RSI-TI"
+  - "Stoch_K-TI"
+  
+  # Lagged (1)
+  - "PriceChange_lag1"
+
+output:
+  results_file: "results/cfg_vif_31_to_13.json"
+  model_prefix: "cfg_vif_13"

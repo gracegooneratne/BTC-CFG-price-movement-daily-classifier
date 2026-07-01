@@ -1,0 +1,97 @@
+{
+  "experiment": "Bitcoin 31 Features - Baseline Feature Set",
+  "description": "Original feature set: 8 External Factors + 5 Bitcoin OHLCV + 17 Technical Indicators + 1 Lagged",
+  "date_completed": "2026-06-17",
+  "feature_configuration": {
+    "total_features": 31,
+    "feature_breakdown": {
+      "external_factors": 8,
+      "bitcoin_ohlcv": 5,
+      "technical_indicators": 17,
+      "lagged_features": 1
+    },
+    "feature_list": [
+      "YM-EF", "NKD-EF", "NQ-EF", "GC-EF", "JPYUSD-EF", "Z-EF", "CL-EF", "DXY-EF",
+      "Open-BPI", "High-BPI", "Low-BPI", "Close-BPI", "Volume-BPI",
+      "AD-TI", "BBands_Upper-TI", "BBands_Middle-TI", "BBands_Lower-TI", "EMA_12-TI", "EMA_26-TI",
+      "MACD-TI", "MACD_Signal-TI", "MACD_Hist-TI", "NATR-TI", "OBV-TI", "RSI-TI",
+      "SMA_20-TI", "SMA_50-TI", "Stoch_K-TI", "Stoch_D-TI",
+      "Close_lag1", "PriceChange_lag1"
+    ]
+  },
+  "data_split": {
+    "total_samples": 2508,
+    "train_tune_samples": 2006,
+    "holdout_samples": 502,
+    "split_ratio": 0.8
+  },
+  "optuna_hyperparameter_tuning": {
+    "description": "Bayesian optimization on 80% tune set",
+    "n_trials": 100,
+    "best_trial_number": 25,
+    "rollover_config": {
+      "train_window": 200,
+      "test_window": 1,
+      "step_size": 50,
+      "note": "Larger step size for faster tuning"
+    },
+    "tune_accuracy": 0.676,
+    "best_hyperparameters": {
+      "architecture": {
+        "n_layers": 3,
+        "hidden_layers": [256, 16, 16],
+        "activation": "relu"
+      },
+      "regularization": {
+        "dropout": 0.5,
+        "alpha": 0.505,
+        "beta": 0.0998
+      },
+      "optimization": {
+        "learning_rate": 3.762e-05,
+        "batch_size": 64,
+        "epochs": 40,
+        "patience": 15,
+        "val_split": 0.25
+      }
+    }
+  },
+  "holdout_validation_5_fold": {
+    "description": "5 independent runs on 20% holdout set with step_size=1",
+    "rollover_config": {
+      "train_window": 200,
+      "test_window": 1,
+      "step_size": 1,
+      "n_windows_per_run": 302
+    },
+    "individual_runs": {
+      "run_1": 0.500,
+      "run_2": 0.464,
+      "run_3": 0.526,
+      "run_4": 0.457,
+      "run_5": 0.470
+    },
+    "statistics": {
+      "mean_accuracy": 0.483,
+      "std_accuracy": 0.029,
+      "min_accuracy": 0.457,
+      "max_accuracy": 0.526,
+      "confidence_interval_95": {
+        "lower": 0.426,
+        "upper": 0.541
+      }
+    }
+  },
+  "performance_analysis": {
+    "overfitting_gap": 0.193,
+    "overfitting_percentage": 28.5,
+    "performance_vs_random": -0.017,
+    "performance_vs_random_percentage": -3.4,
+    "conclusion": "Severe overfitting. Model achieves 67.6% on tune set but collapses to 48.3% on holdout (worse than random 50.4%)."
+  },
+  "interpretation": {
+    "predictive_power": "None - performance indistinguishable from random guessing",
+    "generalization": "Poor - large overfitting gap indicates memorization without learning",
+    "recommendation": "31 baseline features do not contain predictive signal for daily Bitcoin price direction"
+  }
+}

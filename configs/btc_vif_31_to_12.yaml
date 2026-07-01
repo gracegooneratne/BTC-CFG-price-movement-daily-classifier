@@ -1,0 +1,32 @@
+# Bitcoin VIF-Filtered: 31 → 12 Features
+experiment_name: "Bitcoin VIF 31→12"
+asset: "Bitcoin (BTC-USD)"
+
+data:
+  file: "data/raw/btc_financial_data.csv"
+  target_column: "Close-BPI"
+  
+features:
+  # External Factors (5) - VIF filtered
+  - "NKD-EF"
+  - "GC-EF"
+  - "Z-EF"
+  - "CL-EF"
+  - "DXY-EF"
+  
+  # Bitcoin OHLCV (1) - VIF filtered
+  - "Volume-BPI"
+  
+  # Technical Indicators (5) - VIF filtered
+  - "MACD_Signal-TI"
+  - "NATR-TI"
+  - "OBV-TI"
+  - "RSI-TI"
+  - "Stoch_K-TI"
+  
+  # Lagged (1)
+  - "PriceChange_lag1"
+
+output:
+  results_file: "results/bitcoin_vif_31_to_12.json"
+  model_prefix: "btc_vif_12"

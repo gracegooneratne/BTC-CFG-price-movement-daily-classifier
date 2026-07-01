@@ -1,0 +1,32 @@
+{
+  "experiment": "CFG Majority Class Baseline",
+  "asset": "Centrifuge (CFG-USD)",
+  "description": "Majority class determined from 80% train, evaluated on 20% test",
+  "data_split": {
+    "train_size": 1323,
+    "test_size": 331,
+    "split_ratio": 0.8
+  },
+  "class_distribution": {
+    "train": {
+      "up": 592,
+      "down": 731,
+      "up_percentage": 44.74678760393046
+    },
+    "test": {
+      "up": 137,
+      "down": 194,
+      "up_percentage": 41.389728096676734
+    }
+  },
+  "majority_class": {
+    "class": 0,
+    "label": "Down"
+  },
+  "results": {
+    "accuracy": 0.5861027190332326,
+    "precision": 0.0,
+    "recall": 0.0,
+    "f1_score": 0.0
+  }
+}

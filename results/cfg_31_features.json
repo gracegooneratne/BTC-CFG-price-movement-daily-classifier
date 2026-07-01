@@ -1,0 +1,100 @@
+{
+  "experiment": "Centrifuge 31 Features - Baseline Feature Set",
+  "asset": "Centrifuge (CFG-USD)",
+  "description": "Original feature set: 8 External Factors + 5 CFG OHLCV + 17 Technical Indicators + 1 Lagged",
+  "date_completed": "2026-06-18",
+  "feature_configuration": {
+    "total_features": 31,
+    "feature_breakdown": {
+      "external_factors": 8,
+      "cfg_ohlcv": 5,
+      "technical_indicators": 17,
+      "lagged_features": 1
+    },
+    "feature_list": [
+      "YM-EF", "NKD-EF", "NQ-EF", "GC-EF", "JPYUSD-EF", "Z-EF", "CL-EF", "DXY-EF",
+      "Open-CD", "High-CD", "Low-CD", "Close-CD", "Volume-CD",
+      "AD-TI", "BBands_Upper-TI", "BBands_Middle-TI", "BBands_Lower-TI", "EMA_12-TI", "EMA_26-TI",
+      "MACD-TI", "MACD_Signal-TI", "MACD_Hist-TI", "NATR-TI", "OBV-TI", "RSI-TI",
+      "SMA_20-TI", "SMA_50-TI", "Stoch_K-TI", "Stoch_D-TI",
+      "Close_lag1", "PriceChange_lag1"
+    ],
+    "note": "Same feature structure as Bitcoin but with CFG price data (CD) instead of Bitcoin (BPI)"
+  },
+  "data_split": {
+    "total_samples": 1704,
+    "train_tune_samples": 1363,
+    "holdout_samples": 341,
+    "split_ratio": 0.8
+  },
+  "optuna_hyperparameter_tuning": {
+    "description": "Bayesian optimization on 80% tune set",
+    "n_trials": 100,
+    "best_trial_number": 17,
+    "rollover_config": {
+      "train_window": 200,
+      "test_window": 1,
+      "step_size": 50,
+      "note": "Larger step size for faster tuning"
+    },
+    "tune_accuracy": 0.652,
+    "best_hyperparameters": {
+      "architecture": {
+        "n_layers": 2,
+        "hidden_layers": [128, 512],
+        "activation": "elu"
+      },
+      "regularization": {
+        "dropout": 0.55,
+        "alpha": 0.265,
+        "beta": 2.742e-05
+      },
+      "optimization": {
+        "learning_rate": 1.185e-05,
+        "batch_size": 64,
+        "epochs": 110,
+        "patience": 25,
+        "val_split": 0.3
+      }
+    }
+  },
+  "holdout_validation_5_fold": {
+    "description": "5 independent runs on 20% holdout set with step_size=1",
+    "rollover_config": {
+      "train_window": 200,
+      "test_window": 1,
+      "step_size": 1,
+      "n_windows_per_run": 131
+    },
+    "individual_runs": {
+      "run_1": 0.450,
+      "run_2": 0.489,
+      "run_3": 0.534,
+      "run_4": 0.450,
+      "run_5": 0.496
+    },
+    "statistics": {
+      "mean_accuracy": 0.484,
+      "std_accuracy": 0.035,
+      "min_accuracy": 0.450,
+      "max_accuracy": 0.534,
+      "confidence_interval_95": {
+        "lower": 0.415,
+        "upper": 0.553
+      }
+    }
+  },
+  "performance_analysis": {
+    "overfitting_gap": 0.168,
+    "overfitting_percentage": 25.8,
+    "performance_vs_random": -0.016,
+    "performance_vs_random_percentage": -3.2,
+    "conclusion": "Overfitting present. Model achieves 65.2% on tune set but collapses to 48.4% on holdout (worse than random 50%)."
+  },
+  "interpretation": {
+    "predictive_power": "None - performance indistinguishable from random guessing",
+    "generalization": "Poor - overfitting gap indicates memorization without learning",
+    "comparison_to_bitcoin": "Similar results to Bitcoin 31 features (48.3% vs 48.4%) - both random",
+    "recommendation": "31 baseline features do not contain predictive signal for daily CFG price direction, mirroring Bitcoin results"
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "experiment": "Bitcoin VIF Filtered - 31 to 12 Features",
+  "description": "VIF analysis on baseline 31 features, removing high multicollinearity (VIF > 10)",
+  "date_completed": "2026-06-16",
+  "vif_analysis": {
+    "initial_features": 31,
+    "final_features": 12,
+    "features_removed": 19,
+    "vif_threshold": 10.0,
+    "methodology": "Iterative removal of highest VIF feature until all VIF < 10",
+    "removed_features": [
+      {"feature": "BBands_Middle-TI", "vif": "High"},
+      {"feature": "BBands_Lower-TI", "vif": "High"},
+      {"feature": "EMA_12-TI", "vif": "High"},
+      {"feature": "MACD_Hist-TI", "vif": "High"},
+      {"feature": "Open-BPI", "vif": "High"},
+      {"feature": "EMA_26-TI", "vif": "High"},
+      {"feature": "SMA_20-TI", "vif": "High"},
+      {"feature": "Close-BPI", "vif": "High"},
+      {"feature": "Close_lag1", "vif": "High"},
+      {"feature": "High-BPI", "vif": "High"},
+      {"feature": "SMA_50-TI", "vif": "High"},
+      {"feature": "BBands_Upper-TI", "vif": "High"},
+      {"feature": "NQ-EF", "vif": "High"},
+      {"feature": "JPYUSD-EF", "vif": "High"},
+      {"feature": "YM-EF", "vif": "High"},
+      {"feature": "MACD-TI", "vif": "High"},
+      {"feature": "AD-TI", "vif": "High"},
+      {"feature": "Stoch_D-TI", "vif": "High"},
+      {"feature": "Low-BPI", "vif": "High"}
+    ],
+    "remaining_features": [
+      "NKD-EF",
+      "GC-EF",
+      "Z-EF",
+      "CL-EF",
+      "DXY-EF",
+      "Volume-BPI",
+      "MACD_Signal-TI",
+      "NATR-TI",
+      "OBV-TI",
+      "RSI-TI",
+      "Stoch_K-TI",
+      "PriceChange_lag1"
+    ]
+  },
+  "feature_configuration": {
+    "total_features": 12,
+    "feature_breakdown": {
+      "external_factors": 5,
+      "bitcoin_ohlcv": 1,
+      "technical_indicators": 5,
+      "lagged_features": 1
+    }
+  },
+  "data_split": {
+    "total_samples": 2508,
+    "train_tune_samples": 2006,
+    "holdout_samples": 502,
+    "split_ratio": 0.8
+  },
+  "optuna_hyperparameter_tuning": {
+    "description": "Bayesian optimization on 80% tune set with VIF-reduced features",
+    "n_trials": 100,
+    "best_trial_number": 16,
+    "rollover_config": {
+      "train_window": 200,
+      "test_window": 1,
+      "step_size": 50,
+      "note": "Larger step size for faster tuning"
+    },
+    "tune_accuracy": 0.730,
+    "best_hyperparameters": {
+      "architecture": {
+        "n_layers": 3,
+        "hidden_layers": [128, 64, 128],
+        "activation": "elu"
+      },
+      "regularization": {
+        "dropout": 0.4,
+        "alpha": 0.931,
+        "beta": 1.728e-05
+      },
+      "optimization": {
+        "learning_rate": 4.328e-04,
+        "batch_size": 128,
+        "epochs": 40,
+        "patience": 15,
+        "val_split": 0.1
+      }
+    }
+  },
+  "holdout_validation_5_fold": {
+    "description": "5 independent runs on 20% holdout set with step_size=1",
+    "rollover_config": {
+      "train_window": 200,
+      "test_window": 1,
+      "step_size": 1,
+      "n_windows_per_run": 302
+    },
+    "individual_runs": {
+      "run_1": 0.493,
+      "run_2": 0.523,
+      "run_3": 0.517,
+      "run_4": 0.507,
+      "run_5": 0.483
+    },
+    "statistics": {
+      "mean_accuracy": 0.505,
+      "std_accuracy": 0.016,
+      "min_accuracy": 0.483,
+      "max_accuracy": 0.523,
+      "confidence_interval_95": {
+        "lower": 0.473,
+        "upper": 0.537
+      }
+    }
+  },
+  "performance_analysis": {
+    "overfitting_gap": 0.225,
+    "overfitting_percentage": 30.8,
+    "performance_vs_random": 0.001,
+    "performance_vs_random_percentage": 0.2,
+    "performance_vs_baseline_31": 0.022,
+    "conclusion": "VIF filtering reduced features from 31 to 12 but did NOT reduce overfitting (73.0% tune vs 50.5% holdout). Performance still random."
+  },
+  "interpretation": {
+    "predictive_power": "None - performance indistinguishable from random guessing",
+    "generalization": "Poor - VIF filtering did not improve generalization",
+    "vif_effectiveness": "Removing multicollinearity did not help - problem is lack of signal, not feature redundancy",
+    "recommendation": "Feature reduction alone cannot create predictive signal where none exists"
+  }
+}
