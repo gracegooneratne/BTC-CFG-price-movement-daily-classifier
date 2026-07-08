@@ -130,12 +130,22 @@ Evaluation: Walk-forward validation with 200-day rolling window
 Initially, the model was trained on BTC data. A baseline accuracy of 49.20% was established by measuring the accuracy of a majority-class classifier on the held-out 20% test set.
 
 The hyperparameter tuning → 5-fold testing pipeline was then run on the 31-feature Bitcoin set (external market factors and coin-specific data). This failed to beat the baseline and exhibited a severe overfitting gap, with tuning accuracy substantially exceeding test accuracy. To address this, a VIF analysis was conducted and features with the highest multicollinearity were iteratively removed until the remaining 12 features each had a VIF below 10. Rerunning the pipeline on this reduced feature set yielded no meaningful improvement in test performance, and the overfitting gap persisted.
+<img width="2650" height="800" alt="btc_vif_weights_animation" src="https://github.com/user-attachments/assets/fe4091f3-aeb4-4554-8852-78cefd39b20b" />
+<img width="2650" height="800" alt="btc_31_weights_animation" src="https://github.com/user-attachments/assets/432a9166-bfc7-4fd5-b3cf-a50ffde2f3e7" />
 
 
 The feature set was then expanded by incorporating on-chain metrics, bringing the total to 43 features. The pipeline was rerun but again failed to exceed random guessing and continued to exhibit severe overfitting. A second VIF analysis reduced the set to 17 features; however, neither test accuracy nor the overfitting gap improved.
 
 
-Attention then shifted to the altcoin Centrifuge, on the basis that its less efficient market might offer greater opportunity for a significant result. A majority-class baseline of 58.61% was established using the same methodology. Running the pipeline on the full 31-feature CFG set again produced results below 50% with severe overfitting. Following VIF filtering down to 13 features, test accuracy improved to 56.2% and the overfitting gap narrowed — however, this still fell short of the majority-class baseline. A confusion matrix revealed that the model was predicting Down approximately 84% of the time regardless of the true label, confirming that it had not learned a meaningful signal but was instead exploiting the class imbalance.
+Attention then shifted to the altcoin Centrifuge, on the basis that its less efficient market might offer greater opportunity for a significant result. A majority-class baseline of 58.61% was established using the same methodology. Running the pipeline on the full 31-feature CFG set again produced results below 50% with severe overfitting. Following VIF filtering down to 13 features, test accuracy improved to 56.2% and the overfitting gap narrowed.
+
+
+<img width="2650" height="800" alt="cfg_vif_weights_animation" src="https://github.com/user-attachments/assets/873af054-1a5a-4307-a2a8-63fcfb028bd9" />
+
+However, this still fell short of the majority-class baseline. A confusion matrix revealed that the model was predicting Down approximately 84% of the time regardless of the true label, confirming that it had not learned a meaningful signal but was instead exploiting the class imbalance.
+
+<img width="50%" height="50%" alt="image" src="https://github.com/user-attachments/assets/b4213b6b-1884-419a-8e34-eee67ffeee7d" />
+
 
 
 Across all configurations tested, the model consistently failed to demonstrate meaningful predictive power over daily Bitcoin and Centrifuge price direction, suggesting that cryptocurrency price movement may not be reliably learnable from the feature sets and architectures explored here, a finding that is consistent with the broader literature on market efficiency.
